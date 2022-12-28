@@ -1,11 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
+import multer from 'multer';
 import {validationResult} from 'express-validator';
 
 import {loginValidation, registerValidation, postCreateValidation} from './validations.js';
-import checkAuth from './utils/checkAuth.js';
-import * as userController from './controllers/userController.js'
-import * as postController from './controllers/postController.js'
+import {userController, postController} from './controllers/index.js';
+import {handleValidationErrors, checkAuth} from './utils/index.js';
 
 mongoose.set('strictQuery', true);
 mongoose.connect("mongodb+srv://kek:qhWZ4so6Ca6tpdmJ@cluster0.ftkilue.mongodb.net/blog?retryWrites=true&w=majority")
@@ -14,22 +14,41 @@ mongoose.connect("mongodb+srv://kek:qhWZ4so6Ca6tpdmJ@cluster0.ftkilue.mongodb.ne
 
 const app = express();
 
+const storage = multer.diskStorage({
+    destination: (_, __, cb) => {
+        cb(null, 'uploads');
+    },
+    filename: (_, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({ storage });
+
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 app.get('/', (req, res) => {
     res.send("hello");
 });
 
-app.post('/auth/login', userController.login);
-app.post('/auth/register', loginValidation, userController.register);
+//user
+app.post('/auth/login', loginValidation, handleValidationErrors, userController.login);
+app.post('/auth/register', registerValidation, handleValidationErrors, userController.register);
 app.get('/auth/me', checkAuth, userController.getMe);
-//app.get('/posts', checkAuth, postController.create);
 
+app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
+    res.json({
+        url: `/uploads/${req.file.originalname}`,
+    });
+});
+
+//posts 
 app.get('/posts', postController.getAll);
 app.get('/posts/:id', postController.getOne);
-app.post('/posts', checkAuth, postCreateValidation, postController.create);
+app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, postController.create);
 app.delete('/posts/:id', checkAuth, postController.remove);
-app.patch('/posts/:id', checkAuth, postController.update);
+app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, postController.update);
 
 app.listen(4444, (err) => {
     if(err) {

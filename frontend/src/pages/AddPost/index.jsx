@@ -116,7 +116,7 @@ export const AddPost = () => {
       <TextField
         classes={{ root: styles.title }}
         variant="standard"
-        placeholder="Заголовок статьи..."
+        placeholder="Title..."
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         fullWidth
@@ -124,7 +124,7 @@ export const AddPost = () => {
       <TextField
         classes={{ root: styles.tags }}
         variant="standard"
-        placeholder="Тэги"
+        placeholder="Tags"
         value={tags}
         onChange={(e) => setTags(e.target.value)}
         fullWidth

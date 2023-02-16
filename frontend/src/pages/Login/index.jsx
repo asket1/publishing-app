@@ -65,7 +65,7 @@ export const Login = () => {
           fullWidth
         />
         <Button disabled={!isValid} type="submit" size="large" variant="contained" fullWidth>
-          Exit
+          Log in
         </Button>
       </form>
     </Paper>

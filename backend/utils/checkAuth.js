@@ -1,20 +1,26 @@
-import jwt from 'jsonwebtoken';
-
-export default (req, res, next) => {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+exports.default = (req, res, next) => {
     const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
-    if(token) {
+    if (token) {
         try {
-            const decoded = jwt.verify(token, 'secretkey');
+            const decoded = jsonwebtoken_1.default.verify(token, 'secretkey');
             req.userId = decoded._id;
             next();
-        } catch (err) {return res.status(403).json({
-            message: 'No access2'
-        })
+        }
+        catch (err) {
+            return res.status(403).json({
+                message: 'No access2',
+            });
+        }
     }
-            
-    } else {
+    else {
         return res.status(403).json({
-            message: 'No access'
-        })
-    };
+            message: 'No access',
+        });
+    }
 };

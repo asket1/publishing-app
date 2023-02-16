@@ -1,70 +1,58 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import multer from 'multer';
-import cors from 'cors';
-import { validationResult } from 'express-validator';
-
-import { loginValidation, registerValidation, postCreateValidation } from './validations.js';
-import { userController, postController } from './controllers/index.js';
-import { handleValidationErrors, checkAuth } from './utils/index.js';
-
-mongoose.set('strictQuery', true);
-mongoose
-  .connect(
-    'mongodb+srv://kek:qhWZ4so6Ca6tpdmJ@cluster0.ftkilue.mongodb.net/blog?retryWrites=true&w=majority',
-  )
-  .then(() => console.log('DB OK'))
-  .catch((err) => console.log('DB error', err));
-
-const app = express();
-
-const storage = multer.diskStorage({
-  destination: (_, __, cb) => {
-    cb(null, 'uploads');
-  },
-  filename: (_, file, cb) => {
-    cb(null, file.originalname);
-  },
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const mongoose_1 = __importDefault(require("mongoose"));
+const multer_1 = __importDefault(require("multer"));
+const cors_1 = __importDefault(require("cors"));
+const validations_js_1 = require("./validations.js");
+const index_js_1 = require("./controllers/index.js");
+const index_js_2 = require("./utils/index.js");
+mongoose_1.default.set('strictQuery', true);
+mongoose_1.default
+    .connect('mongodb+srv://kek:qhWZ4so6Ca6tpdmJ@cluster0.ftkilue.mongodb.net/blog?retryWrites=true&w=majority')
+    .then(() => console.log('DB OK'))
+    .catch((err) => console.log('DB error', err));
+const app = (0, express_1.default)();
+const storage = multer_1.default.diskStorage({
+    destination: (_, __, cb) => {
+        cb(null, 'uploads');
+    },
+    filename: (_, file, cb) => {
+        cb(null, file.originalname);
+    },
 });
-
-const upload = multer({ storage });
-
-app.use(express.json());
-app.use(cors());
-app.use('/uploads', express.static('uploads'));
-
+const upload = (0, multer_1.default)({ storage });
+app.use(express_1.default.json());
+app.use((0, cors_1.default)());
+app.use('/uploads', express_1.default.static('uploads'));
 app.get('/', (req, res) => {
-  res.send('main page');
+    res.send('main page');
 });
-
 //user
-app.post('/auth/login', loginValidation, handleValidationErrors, userController.login);
-app.post('/auth/register', registerValidation, handleValidationErrors, userController.register);
-app.get('/auth/me', checkAuth, userController.getMe);
-
-app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
-  res.json({
-    url: `/uploads/${req.file.originalname}`,
-  });
+app.post('/auth/login', validations_js_1.loginValidation, index_js_2.handleValidationErrors, index_js_1.userController.login);
+app.post('/auth/register', validations_js_1.registerValidation, index_js_2.handleValidationErrors, index_js_1.userController.register);
+app.get('/auth/me', index_js_2.checkAuth, index_js_1.userController.getMe);
+app.post('/upload', index_js_2.checkAuth, upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded');
+    }
+    res.json({
+        url: `/uploads/${req.file.originalname}`,
+    });
 });
-
 //posts
-app.get('/posts', postController.getAll);
-app.get('/tags', postController.getLastTags);
-app.get('/posts/:id', postController.getOne);
-app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, postController.create);
-app.delete('/posts/:id', checkAuth, postController.remove);
-app.patch(
-  '/posts/:id',
-  checkAuth,
-  postCreateValidation,
-  handleValidationErrors,
-  postController.update,
-);
-
+app.get('/posts', index_js_1.postController.getAll);
+app.get('/tags', index_js_1.postController.getLastTags);
+app.get('/posts/:id', index_js_1.postController.getOne);
+app.post('/posts', index_js_2.checkAuth, validations_js_1.postCreateValidation, index_js_2.handleValidationErrors, index_js_1.postController.create);
+app.delete('/posts/:id', index_js_2.checkAuth, index_js_1.postController.remove);
+app.patch('/posts/:id', index_js_2.checkAuth, validations_js_1.postCreateValidation, index_js_2.handleValidationErrors, index_js_1.postController.update);
 app.listen(4444, (err) => {
-  if (err) {
-    return console.log(err);
-  }
-  console.log('Server OK');
+    if (err) {
+        return console.log(err);
+    }
+    console.log('Server OK');
 });

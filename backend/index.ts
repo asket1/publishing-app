@@ -10,9 +10,7 @@ import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set('strictQuery', true);
 mongoose
-  .connect(
-    'mongodb+srv://kek:qhWZ4so6Ca6tpdmJ@cluster0.ftkilue.mongodb.net/blog?retryWrites=true&w=majority',
-  )
+  .connect(process.env.MONGODB_URI as string)
   .then(() => console.log('DB OK'))
   .catch((err) => console.log('DB error', err));
 
@@ -65,7 +63,7 @@ app.patch(
   postController.update,
 );
 
-app.listen(4444, (err?: Error) => {
+app.listen(process.env.PORT || 4444, (err?: Error) => {
   if (err) {
     return console.log(err);
   }

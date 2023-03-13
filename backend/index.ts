@@ -36,6 +36,9 @@ app.use('/uploads', express.static('uploads'));
 app.get('/', (req: Request, res: Response) => {
   res.status(200).send('main page');
 });
+app.get('/healthz', (req: Request, res: Response) => {
+  res.status(200).send('main page');
+});
 
 //user
 app.post('/auth/login', loginValidation, handleValidationErrors, userController.login);

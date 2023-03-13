@@ -31,6 +31,9 @@ app.use('/uploads', express_1.default.static('uploads'));
 app.get('/', (req, res) => {
     res.status(200).send('main page');
 });
+app.get('/healthz', (req, res) => {
+    res.status(200).send('main page');
+});
 //user
 app.post('/auth/login', validations_js_1.loginValidation, index_js_2.handleValidationErrors, index_js_1.userController.login);
 app.post('/auth/register', validations_js_1.registerValidation, index_js_2.handleValidationErrors, index_js_1.userController.register);

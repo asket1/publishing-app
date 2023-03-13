@@ -68,7 +68,7 @@ app.patch(
   postController.update,
 );
 
-app.listen(4444, '0.0.0.0', (err?: Error) => {
+app.listen(10000, '0.0.0.0', (err?: Error) => {
   if (err) {
     return console.log(err);
   }

@@ -53,7 +53,7 @@ app.get('/posts/:id', index_js_1.postController.getOne);
 app.post('/posts', index_js_2.checkAuth, validations_js_1.postCreateValidation, index_js_2.handleValidationErrors, index_js_1.postController.create);
 app.delete('/posts/:id', index_js_2.checkAuth, index_js_1.postController.remove);
 app.patch('/posts/:id', index_js_2.checkAuth, validations_js_1.postCreateValidation, index_js_2.handleValidationErrors, index_js_1.postController.update);
-app.listen(10000, '0.0.0.0', (err) => {
+app.listen(4444, (err) => {
     if (err) {
         return console.log(err);
     }

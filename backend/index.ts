@@ -34,7 +34,7 @@ app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('main page');
+  res.status(200).send('main page');
 });
 
 //user

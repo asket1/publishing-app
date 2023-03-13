@@ -29,7 +29,7 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use('/uploads', express_1.default.static('uploads'));
 app.get('/', (req, res) => {
-    res.send('main page');
+    res.status(200).send('main page');
 });
 //user
 app.post('/auth/login', validations_js_1.loginValidation, index_js_2.handleValidationErrors, index_js_1.userController.login);

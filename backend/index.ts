@@ -10,7 +10,9 @@ import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 mongoose.set('strictQuery', true);
 mongoose
-  .connect(process.env.MONGODB_URI as string)
+  .connect(
+    'mongodb+srv://kek:qhWZ4so6Ca6tpdmJ@cluster0.ftkilue.mongodb.net/blog?retryWrites=true&w=majority',
+  )
   .then(() => console.log('DB OK'))
   .catch((err) => console.log('DB error', err));
 

@@ -48,7 +48,7 @@ export const FullPost = () => {
               fullName: 'John Doe',
               avatarUrl: '',
             },
-            text: 'Test comment',
+            text: 'Test comment1',
           },
           {
             user: {

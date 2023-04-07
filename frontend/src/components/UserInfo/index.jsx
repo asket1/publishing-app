@@ -7,7 +7,9 @@ export const UserInfo = ({ avatarUrl, fullName, additionalText }) => {
       <img className={styles.avatar} src={avatarUrl || '/noavatar.png'} alt={fullName} />
       <div className={styles.userDetails}>
         <span className={styles.userName}>{fullName}</span>
-        <span className={styles.additional}>{additionalText}</span>
+        <span className={styles.additional}>
+          {additionalText.substring(0, 10)} {additionalText.substring(11, 16)}
+        </span>
       </div>
     </div>
   );

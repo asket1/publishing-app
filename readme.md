@@ -1,6 +1,7 @@
 See website: [139.144.77.242](http://139.144.77.242/)
+Project is running in Docker containers on VPS
 
-Fullstack project  
+MERN project:    
  Backend: Node.js, Express.js, MongoDB, JWT, Bcrypt  
  Frontend: React.js, Redux
 
